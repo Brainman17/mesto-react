@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../src/index.css";
 import Header from "./Header";
 import Main from "./Main";
@@ -7,10 +7,10 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 
 function App() {
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState({});
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState({});
 
   function handleEditAvatar() {
     setIsEditAvatarPopupOpen(true);
@@ -51,6 +51,7 @@ function App() {
         name="edit"
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
+        buttonText="Сохранить"
       >
         <input
           type="text"
@@ -74,17 +75,13 @@ function App() {
           required
         />
         <span id="job-error"></span>
-        <input
-          type="submit"
-          value="Сохранить"
-          className="popup__save-button popup__button"
-        />
       </PopupWithForm>
       <PopupWithForm
         title="Новое место"
         name="add"
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
+        buttonText="Создать"
       >
         <input
           type="text"
@@ -106,18 +103,13 @@ function App() {
           required
         />
         <span id="url-error"></span>
-        <input
-          type="submit"
-          value="Создать"
-          className="popup__create-button popup__button popup__button_invalid"
-          disabled
-        />
       </PopupWithForm>
       <PopupWithForm
         title="Обновить аватар"
         name="avatar"
         isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
+        buttonText="Сохранить"
       >
         <input
           type="url"
@@ -128,16 +120,12 @@ function App() {
           required
         />
         <span id="avatar-error"></span>
-        <input
-          type="submit"
-          value="Сохранить"
-          className="popup__create-button popup__button popup__button_invalid"
-          disabled
-        />
       </PopupWithForm>
-      <PopupWithForm title="Вы уверены?" name="delete">
-        <input type="submit" value="Да" className="popup__delete-button" />
-      </PopupWithForm>
+      <PopupWithForm
+        title="Вы уверены?"
+        name="delete"
+        buttonText="Да"
+      ></PopupWithForm>
     </div>
   );
 }
