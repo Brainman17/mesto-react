@@ -1,30 +1,16 @@
-import React, { useState, useEffect } from "react";
-import api from "../utils/Api";
+import { useContext } from "react";
 import Card from "./Card";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
-  const [userName, setUserName] = useState('');
-  const [userDescription, setUserDescription] = useState('');
-  const [userAvatar, setUserAvatar] = useState('');
-  const [cards, setCards] = useState([]);
-
-  useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([userData, cards]) => {
-        setUserName(userData.name);
-        setUserDescription(userData.about);
-        setUserAvatar(userData.avatar);
-        setCards(cards);
-      })
-      .catch(console.log);
-  }, []);
+function Main({ cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, handleCardLike, handleCardDelete }) {
+  const currentUser = useContext(CurrentUserContext);
 
   return (
     <main className="page__content">
       <section className="profile page__profile">
         <div className="profile__avatar-wrap">
           <img
-            src={userAvatar}
+            src={currentUser.avatar}
             alt="Аватар"
             name="avatar"
             className="profile__avatar"
@@ -33,14 +19,14 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
         </div>
         <div className="profile__info">
           <div className="profile__wrapper">
-            <h1 className="profile__title">{userName}</h1>
+            <h1 className="profile__title">{currentUser.name}</h1>
             <button
               className="profile__edit-button"
               type="button"
               onClick={onEditProfile}
             ></button>
           </div>
-          <h2 className="profile__subtitle">{userDescription}</h2>
+          <h2 className="profile__subtitle">{currentUser.about}</h2>
         </div>
         <button
           className="profile__add-button"
@@ -58,6 +44,8 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
               title={card.name}
               like={card.likes}
               onCardClick={onCardClick}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
             />
           );
         })}

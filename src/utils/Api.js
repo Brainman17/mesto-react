@@ -52,16 +52,23 @@ class Api {
     }).then(this._checkResponse);
   }
 
-  putLike(_id) {
-    return fetch(this._baseUrl + "/cards/" + _id + "/likes", {
-      method: "PUT",
-      headers: this._headers,
-    }).then(this._checkResponse);
-  }
+  // putLike(_id) {
+  //   return fetch(this._baseUrl + "/cards/" + _id + "/likes", {
+  //     method: "PUT",
+  //     headers: this._headers,
+  //   }).then(this._checkResponse);
+  // }
 
-  deleteLike(_id) {
+  // deleteLike(_id) {
+  //   return fetch(this._baseUrl + "/cards/" + _id + "/likes", {
+  //     method: "DELETE",
+  //     headers: this._headers,
+  //   }).then(this._checkResponse);
+  // }
+
+  changeLikeCardStatus(_id, isLiked) {
     return fetch(this._baseUrl + "/cards/" + _id + "/likes", {
-      method: "DELETE",
+      method: isLiked ? 'DELETE' : 'PUT',
       headers: this._headers,
     }).then(this._checkResponse);
   }
