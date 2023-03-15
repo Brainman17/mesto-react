@@ -10,13 +10,11 @@ function PopupWithForm({ title, name, children, isOpen, onClose, buttonText, onS
           className={`popup__form popup__form-content popup__form-content_${name}`}
           name={`form-${name}`}
           onSubmit={onSubmit}
-          noValidate
         >
           {children}
           <button
             type="submit"
-            className="popup__create-button popup__button popup__button_invalid"
-            disabled
+            className="popup__create-button popup__button"
           >
             {buttonText}
           </button>

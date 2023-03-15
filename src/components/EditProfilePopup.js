@@ -50,7 +50,7 @@ useEffect(() => {
         minLength="2"
         maxLength="40"
         required
-        value={name} 
+        defaultValue={name} 
         onChange={handleChangeName}
       />
       <span id="name-error"></span>
@@ -63,7 +63,7 @@ useEffect(() => {
         minLength="2"
         maxLength="200"
         required
-        value={about} 
+        defaultValue={about} 
         onChange={handleChangeAbout}
       />
       <span id="job-error"></span>

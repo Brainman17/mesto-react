@@ -62,12 +62,9 @@ function App() {
       .catch(console.log);
   }
 
-  function handleUpdateUser(name, about) {
+  function handleUpdateUser({ name, about }) {
     api
-      .editUserInfo({
-        name: name,
-        about: about,
-      })
+      .editUserInfo(name, about)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
@@ -75,7 +72,7 @@ function App() {
       .catch(console.log);
   }
 
-  function handleUpdateAvatar(avatar) {
+  function handleUpdateAvatar({ avatar }) {
     api
       .updateAvatar(avatar)
       .then((res) => {
@@ -85,12 +82,9 @@ function App() {
       .catch(console.log);
   }
 
-  function handleAddPlaceSubmit(name, link) {
+  function handleAddPlaceSubmit({ name, link }) {
     api
-    .postCreateCard({
-      name: name,
-      link: link,
-    })
+    .postCreateCard(name, link)
     .then((res) => {
       const newCard = res;
       setCards([newCard, ...cards]);

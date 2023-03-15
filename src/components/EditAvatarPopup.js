@@ -8,7 +8,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
     event.preventDefault();
 
     onUpdateAvatar({
-        avatar: avatarRef.current.value()
+        avatar: avatarRef.current.value
     });
   }
   return (

@@ -5,3 +5,7 @@
 .popup__button:disabled {
   cursor: default;
 }
+
+.popup__button:hover {
+  cursor: pointer;
+}
