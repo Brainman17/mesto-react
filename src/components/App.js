@@ -17,7 +17,8 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [cards, setCards] = useState([]);
-  const [currentUser, setCurrentUser] = useState("");
+  const [currentUser, setCurrentUser] = useState({});
+  const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
     api
@@ -34,17 +35,16 @@ function App() {
       .then((cards) => {
         setCards(cards);
       })
-      .catch(console.log);
+      .catch(console.log)
   }, []);
 
   function handleCardDelete(card) {
     api
       .deleteInitialCards(card._id)
       .then(() => {
-        const newCard = cards.filter((item) => item._id !== card._id);
-        setCards(newCard);
+        setCards((state) => state.filter((item) => item._id !== card._id));
       })
-      .catch(console.log);
+      .catch(console.log)
   }
 
   function handleCardLike(card) {
@@ -63,34 +63,39 @@ function App() {
   }
 
   function handleUpdateUser({ name, about }) {
+    setIsLoading(true);
     api
       .editUserInfo(name, about)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
       })
-      .catch(console.log);
+      .catch(console.log)
+      .finally(() => setIsLoading(false));
   }
 
   function handleUpdateAvatar({ avatar }) {
+    setIsLoading(true);
     api
       .updateAvatar(avatar)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
       })
-      .catch(console.log);
+      .catch(console.log)
+      .finally(() => setIsLoading(false));
   }
 
   function handleAddPlaceSubmit({ name, link }) {
+    setIsLoading(true);
     api
-    .postCreateCard(name, link)
-    .then((res) => {
-      const newCard = res;
-      setCards([newCard, ...cards]);
-      closeAllPopups();
-    })
-    .catch(console.log);
+      .postCreateCard(name, link)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups();
+      })
+      .catch(console.log)
+      .finally(() => setIsLoading(false));
   }
 
   function handleEditAvatar() {
@@ -108,6 +113,27 @@ function App() {
   function handleCardClick(selectedCard) {
     setSelectedCard(selectedCard);
   }
+
+  const isOpen =
+    isEditAvatarPopupOpen ||
+    isEditProfilePopupOpen ||
+    isAddPlacePopupOpen ||
+    selectedCard.link;
+
+  useEffect(() => {
+    function closeByEscape(evt) {
+      if (evt.key === "Escape") {
+        closeAllPopups();
+      }
+    }
+    if (isOpen) {
+      // навешиваем только при открытии
+      document.addEventListener("keydown", closeByEscape);
+      return () => {
+        document.removeEventListener("keydown", closeByEscape);
+      };
+    }
+  }, [isOpen]);
 
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
@@ -135,23 +161,21 @@ function App() {
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
+          isLoading={isLoading}
         />
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
+          isLoading={isLoading}
         />
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
+          isLoading={isLoading}
         />
-
-        <PopupWithForm
-          title="Вы уверены?"
-          name="delete"
-          buttonText="Да"
-        ></PopupWithForm>
+        <PopupWithForm title="Вы уверены?" name="delete" buttonText="Да" />
       </div>
     </CurrentUserContext.Provider>
   );

@@ -1,9 +1,13 @@
 import { useState } from "react";
+// import { useForm } from "../hooks/useForm";
 import PopupWithForm from "./PopupWithForm";
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
+function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
   const [name, setName] = useState("");
   const [link, setLink] = useState("");
+
+  // const {values, handleChange, setValues} = useForm({});
+
 
   function handleChangeName(e) {
     setName(e.target.value);
@@ -29,7 +33,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
-      buttonText="Создать"
+      buttonText={isLoading ? "Сохранение..." : "Создать"}
     >
       <input
         type="text"
